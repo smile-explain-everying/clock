@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <style>
+ /* body{
+    background:url(b.jpg);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }*/
+      #canvas{
+        /*border:1px solid #000;*/
+        display: block;
+        margin: 0 auto;
+
+      }
+  </style>
+  <body>
+    <canvas id="canvas" width="600" height="420"></canvas>
+    <script>
+        var canvas=document.querySelector('#canvas');
+        var ctx = canvas.getContext('2d');
+        console.dir(ctx);
+
+        var drawclock=function(){
+
+          var r = function(deg){
+            return Math.PI/180*deg;
+          }
+          var img = new Image();
+          img.src = 'a.jpg';
+          img.onload=function(){
+          ctx.clearRect(0,0,600,420);
+           var bg = ctx.createPattern(img, 'no-repeat');
+           ctx.fillStyle=bg;
+           ctx.fillRect(0,0,600,420);
+
+           var now=new Date();
+           var h=now.getHours();
+           var m=now.getMinutes();
+           var s=now.getSeconds();
+
+           ctx.save();
+           ctx.translate(313,250);
+           ctx.strokeStyle='#89033E';
+           ctx.lineWidth='2';//uuuu
+          //////////画表盘
+          // ctx.save();
+          // ctx.beginPath();
+          // ctx.arc(0,0,200,0,r(360));
+          // ctx.stroke();
+          // ctx.closePath();
+          // ctx.restore();
+          // ctx.rotate(r(-90));
+          // ctx.beginPath();
+
+          /////////画刻度线
+          // ctx.save();
+          // ctx.beginPath();
+          // for(var i=0;i<60;i++){
+          //   ctx.moveTo(0,-190);
+          //   ctx.lineTo(0,-200);
+          //   if(i%5 ===0){
+          //     ctx.moveTo(0,-170)
+          //     ctx.lineTo(0,-200);
+          //   }
+          //     ctx.rotate(r(6));
+          // }
+          // ctx.stroke();
+          // ctx.closePath();
+          // ctx.restore();
+
+          ////////////画秒针
+          var s= now.getSeconds()*1000 +now.getMilliseconds();
+          ctx.save();
+          var deg=360*(s/60000);
+          ctx.beginPath();
+          ctx.rotate(r(deg));
+          ctx.moveTo(0,5);
+          ctx.lineTo(0,20);
+          ctx.moveTo(5,0);
+          ctx.arc(0,0,5,0,r(360));
+          ctx.moveTo(0,-5);
+          ctx.lineTo(0,-80);
+          ctx.stroke();
+          ctx.closePath();
+          ctx.restore();
+          /////////////画时针
+          var h=now.getHours();
+          var m=now.getMinutes();
+          var s=now.getSeconds();
+          var deg=((h*3600+m*60+s)/43200)*360;
+          ctx.save();
+          ctx.rotate(r(deg));
+          ctx.beginPath();
+          ctx.moveTo(0,5);
+          ctx.lineTo(0,20);
+          ctx.moveTo(0,-5);
+          ctx.lineTo(0,-50);
+          ctx.stroke();
+          ctx.closePath();
+          ctx.restore();
+          ///////////////画分针
+          var m=now.getMinutes();
+          var s=now.getSeconds();
+          var deg=((m*60+s)/3600)*360;
+          ctx.save();
+          ctx.rotate(r(deg));
+          ctx.beginPath();
+          ctx.moveTo(0,5);
+          ctx.lineTo(0,20);
+          ctx.moveTo(0,-5);
+          ctx.lineTo(0,-70);
+          ctx.stroke();
+          ctx.closePath();
+          ctx.restore();
+          ctx.restore();
+          }
+        }
+
+      drawclock();
+      var t=setInterval(function(){
+        drawclock();
+      },12);
+
+    </script>
+  </body>
+</html>
